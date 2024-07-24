@@ -1,7 +1,7 @@
 ---
 title: "Self-reported life satisfaction, 2011 to 2023"
 subtitle: "Replicating the Our World in Data Grapher"
-author: "Gayathri Mahendran" # Remember to add your name!
+author: "Gayathri Mahendran"
 date: "2024-07-24"
 theme: united
 ---
@@ -120,14 +120,24 @@ line_chart <- cantril %>% filter(Country %in% c("Afghanistan",
                                   "Ukraine",
                                   "Somalia",
                                   "Laos")) %>% 
-  ggplot(aes(x = Year,
+  ggplot(aes(x = as.factor(Year),
          y = `Cantril ladder score`,
-         group = Country)) +
+         group = Country,
+         text = paste(" Year:",Year,"<br>",
+                      "Cantril ladder score:",`Cantril ladder score`,"<br>",
+                      "Country:",Country))) +
   geom_line(aes(colour = Country)) +
-  scale_y_continuous(limits = c(0,10)) +
+  scale_y_continuous(limits = c(0,10),
+                     n.breaks = 6)  +
+  labs(x = element_blank(),
+       y = element_blank()) +
   theme_minimal() 
 
-ggplotly(line_chart, tooltip = c("x","y","group"))
+plotly_plot <- ggplotly(line_chart, tooltip = "text")
+
+plotly_plot
+
+
 ```
 
 ## 📈 Advanced Chart
